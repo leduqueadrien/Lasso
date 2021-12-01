@@ -2,7 +2,7 @@ m = 500; %nombre d'individus
 n = 1000; %nombre d'attributs
 p = 100/m/n; %densite de la matrice A
 
-[A,b,x0,z0,u0,~]=init(m,n,p);
+[A,b,x0,z0,u0,lambda]=init(m,n,p);
 maxiter=10000;
 delta=1e-6;
 delta0=1e-4;
@@ -40,10 +40,11 @@ delta0=1e-4;
 % variation du lambda
 r=1;
 lambda_max = norm(A'*b,'inf');
-lambda = lambda * (0.01:0.01:1);
+lambda = lambda_max * (0.01:0.01:1);
 nl = length(lambda);
-iter = zeros(nl,1);
+vect = zeros(nl,1);
 for i=1:nl
-    [x,~,flag,iter(i)] = lasso(A,b,x0,z0,u0,lambda(i),r,maxiter,delta,delta0);
+    [x,~,flag,~] = lasso(A,b,x0,z0,u0,lambda(i),r,maxiter,delta,delta0);
+    vect(i) = sum(abs(x)<1e-6);
 end
-plot(lambda,iter)
+plot(lambda,vect)
