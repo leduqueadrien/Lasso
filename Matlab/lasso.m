@@ -9,13 +9,16 @@ function [x,h,flag,iter] = lasso(A,b, x0, z0, u0, lambda, r, maxiter, delta, del
     x = x0;
     z = z0;
     iter = 0;
-    [M, flag] = chol(A'*A + r*eye(n));
-    c1 = 10 * delta;
-    e = 10 * delta0;
-    
+    flag = 0;
+    done = false;
     h = zeros(maxiter,1);
+    [M, P] = chol(A'*A + r*eye(n));
+    if (P~=0)
+        flag = 2;
+        done = true;
+    end
     
-    while iter < maxiter && (c1 > delta || norm(e) > delta0)
+    while iter < maxiter && not(done)
         x_anc = x;
         z_anc = z;
         u_anc = u;
@@ -29,11 +32,12 @@ function [x,h,flag,iter] = lasso(A,b, x0, z0, u0, lambda, r, maxiter, delta, del
         
         iter = iter + 1;
         h(iter)=0.5 * norm(A*x-b)^2 + lambda * norm(x,1);
+        done = (sqrt(c1) < delta) && (norm(e) < delta0);
     end
     
     h = h(1:iter);
     
     if iter == maxiter
-        flag = 2;
+        flag = 1;
     end
 end
