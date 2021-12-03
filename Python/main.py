@@ -10,7 +10,7 @@ from lasso import *
 
 m = 50
 n = 100
-p = 100/m/n
+p = 0.1
 
 r = 1
 maxiter = 1000
@@ -18,7 +18,7 @@ epsilone1 = 1e-6
 epsilone2 = 1e-4
 
 # %% Resolution de Ax = b
-A, b, x0, z0, u0, lam = initialisation(n, m, p)
+A, b, x0, z0, u0, lam = initialisation(m, n, p)
 xk, iter, historique_cout = lasso(A, b, x0, z0, u0, lam, r, maxiter, epsilone1, epsilone2)
 
 # %% Affichage
