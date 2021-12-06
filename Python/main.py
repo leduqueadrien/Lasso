@@ -8,13 +8,13 @@ from lasso import *
 
 # Set parameters
 
-m = 5
-n = 10
+m = 50
+n = 100
 p = 0.1
 r = 1
 maxiter = 1000
-epsilone1 = 1e-3
-epsilone2 = 1e-2
+epsilone1 = 1e-6
+epsilone2 = 1e-4
 
 # Resolution de Ax = b
 A, b, x0, z0, u0, lam = initialisation(m, n, p)
