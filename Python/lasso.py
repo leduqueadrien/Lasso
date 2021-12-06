@@ -160,7 +160,7 @@ def lasso_dense(A, b, xk_1, zk_1, uk_1, lam, r, maxiter, epsilone1, epsilone2):
     return xk, iter, historique_f_cout[:iter], flags
 
 
-def initialisation(m, n, p):
+def initialisation(m, n, p, file_A = None, file_b = None):
     # creer les parametres du probleme : 
     # min 1/2*||Ax-b||_2^2 + lambda*||x||_1
     # Ou A est une matrice definie positive
@@ -176,16 +176,24 @@ def initialisation(m, n, p):
     # u0 : vecteur initial de la variable dual
     
     # On genere un x, solution de l'eqution Ax=b
-    x = sp.random(n,1, density=p, data_rvs=st.norm().rvs)
     
-    # On genere la matrice A : m x n
-    A = sp.random(m, n, density=p, data_rvs=st.norm().rvs)
-    # On rend A define positif en rendant sa diagonal dominante
-    A = A * sp.diags( np.array(1 / np.sqrt(A.power(2).sum(axis=0)))[0,:], offsets=0)
-    
-    # On genere b second membre de l'equation Ax=b. On y ajoute un faible bruit gaussien
-    b = A * x + np.sqrt(0.001) * np.random.normal(size=(m, 1))
-    
+    if file_A == None:
+        # On genere la matrice A : m x n
+        A = sp.random(m, n, density=p, data_rvs=st.norm().rvs)
+        # On rend A define positif en rendant sa diagonal dominante
+        A = A * sp.diags( np.array(1 / np.sqrt(A.power(2).sum(axis=0)))[0,:], offsets=0)
+    else:
+        A = np.loadtxt(file_A, delimiter=',')
+        A = sp.csr_matrix(A)
+        
+    if file_b == None:
+        # On genere b second membre de l'equation Ax=b. On y ajoute un faible bruit gaussien
+        x = sp.random(n,1, density=p, data_rvs=st.norm().rvs)
+        b = A * x + np.sqrt(0.001) * np.random.normal(size=(m, 1))
+        b = np.array(b)[:,0]
+    else:
+        b = np.loadtxt(file_b, delimiter=',')
+        
     # On calcul le parametre du probleme lambda
     lambda_max = lg.norm(A.T.dot(b), ord=np.inf)
     lam = 0.1*lambda_max
@@ -194,6 +202,5 @@ def initialisation(m, n, p):
     x0 = np.zeros(n)
     z0 = np.zeros(n)
     u0 = np.zeros(n)
-    b = np.array(b)[:,0]
     
     return A, b, x0, z0, u0, lam
