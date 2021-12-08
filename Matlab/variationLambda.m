@@ -1,15 +1,15 @@
 
-m = 5; %nombre d'individus
-n = 10; %nombre d'attributs
-p = 0.1; %densite de la matrice A
+m = 500; %nombre d'individus
+n = 1000; %nombre d'attributs
+p = 0.01; %densite de la matrice A
 
 [A,b,x0,z0,u0,lambda]=init(m,n,p);
 maxiter=1000;
-delta=1e-3;
-delta0=1e-2;
+delta=1e-6;
+delta0=1e-4;
+r=1;
 
 % variation du lambda
-r=1;
 lambda_max = norm(A'*b,'inf');
 lambda = lambda_max * (0.01:0.1:1);
 nl = length(lambda);
@@ -19,3 +19,6 @@ for i=1:nl
     vect(i) = sum(abs(x)<1e-6);
 end
 plot(lambda,vect)
+title("Evolution du nombre de zeros dans la solution en fonction de lambda (m=500, n=1000, r=1, p=1%)")
+xlabel('lambda')
+ylabel("nombre de zeros dans la solution")

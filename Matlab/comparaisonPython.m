@@ -1,7 +1,7 @@
 
-m = 50; %nombre d'individus
-n = 100; %nombre d'attributs
-p = 0.1; %densite de la matrice A
+m = 1000; %nombre d'individus
+n = 10000; %nombre d'attributs
+p = 0.01; %densite de la matrice A
 r=1;
 maxiter=1000;
 delta=1e-6;

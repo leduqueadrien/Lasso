@@ -2,8 +2,8 @@
 from lasso import *
 from time import time
 
-m = 50
-n = 100
+m = 1000
+n = 10000
 p = 0.1
 r = 1
 maxiter = 1000
