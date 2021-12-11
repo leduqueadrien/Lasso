@@ -15,4 +15,5 @@ tic
 [x,h,flag,iter]=lasso(A,b,x0,z0,u0,lambda,r,maxiter,delta,delta0);
 executions_time = toc;
 
-fprintf("temps moyen d'execution : %f sec", executions_time)
+fprintf("temis moyen d'execution %f sec", executions_time)
+

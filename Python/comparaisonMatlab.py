@@ -2,7 +2,7 @@
 from lasso import *
 from time import time
 
-m = 1000
+m = 5000
 n = 10000
 p = 0.1
 r = 1
