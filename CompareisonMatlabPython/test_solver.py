@@ -25,25 +25,25 @@ start_time_D = time()
 tmpD = AD.T.dot(bD)
 tmpD = lg.solve(RD.T, tmpD)
 xD = lg.solve(RD,  tmpD)
-print(f"temps dense : {time() - start_time_D}")
+print(f"temps dense solver avec dense matrice : {time() - start_time_D}")
 
 start_time_D = time()
 tmpD = AD.T.dot(bD)
 tmpD = sl.solve_triangular(RD.T, tmpD, lower=True)
 xD = sl.solve_triangular(RD,  tmpD, lower=False)
-print(f"temps dense triangulaire : {time() - start_time_D}")
+print(f"temps dense triangulaire solver avec dense matrice : {time() - start_time_D}")
 
 
 start_time_S = time()
 tmpS = AS.T.dot(bS.T)
 tmpS = splg.spsolve(RS.T, tmpS)
 xS = splg.spsolve(RS,  tmpS)
-print(f"temps sparse : {time() - start_time_S}")
+print(f"temps sparse solver avec sparse matrice : {time() - start_time_S}")
 
 
 start_time_S = time()
 tmpD = AS.T.dot(bD.T)
 tmpD = splg.spsolve_triangular(RS.T, tmpD, lower=True)
 xS = splg.spsolve_triangular(RS,  tmpD, lower=False)
-print(f"temps sparse triangulaire: {time() - start_time_S}")
+print(f"temps sparse triangulaire solver avec sparse matrice: {time() - start_time_S}")
 

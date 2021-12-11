@@ -1,4 +1,4 @@
-temps dense : 98.58559894561768
-temps dense triangulaire : 0.9513323307037354
-temps sparse : 45.86778450012207
-temps sparse triangulaire: 1.8245017528533936
+temps dense solver avec dense matrice : 98.04899501800537
+temps dense triangulaire solver avec dense matrice : 0.9184894561767578
+temps sparse solver avec sparse matrice : 45.99208450317383
+temps sparse triangulaire solver avec sparse matrice: 1.822476863861084
