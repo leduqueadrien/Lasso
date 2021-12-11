@@ -4,6 +4,7 @@ import numpy.linalg as lg
 import scipy.sparse as sp
 import scipy.stats as st
 from scipy.sparse import linalg as splg
+import scipy.linalg as sl
 
 
 def Seuillage(V, k):
@@ -23,14 +24,14 @@ def sparse_choleski(A):
     return sp.csr_matrix(R)
 
 
-def lasso(A, b, xk_1, zk_1, uk_1, lam, r, maxiter, epsilone1, epsilone2):
+def lasso(A, b, xk_1, zk_1, uk_1, lam, r, maxiter, epsilone1, epsilone2, **wargs):
     if sp.issparse(A):
-        return lasso_sparse(A, b, xk_1, zk_1, uk_1, lam, r, maxiter, epsilone1, epsilone2)
+        return lasso_sparse(A, b, xk_1, zk_1, uk_1, lam, r, maxiter, epsilone1, epsilone2, **wargs)
     else:
-        return lasso_dense(A, b, xk_1, zk_1, uk_1, lam, r, maxiter, epsilone1, epsilone2)
+        return lasso_dense(A, b, xk_1, zk_1, uk_1, lam, r, maxiter, epsilone1, epsilone2, **wargs)
 
 
-def lasso_sparse(A, b, xk_1, zk_1, uk_1, lam, r, maxiter, epsilone1, epsilone2):
+def lasso_sparse(A, b, xk_1, zk_1, uk_1, lam, r, maxiter, epsilone1, epsilone2, compute_dense_choleski=False, **wargs):
     # Resout le probleme :
     # min 1/2*||Ax-b||_2^2 + lam*||x||_1
     # 
@@ -58,12 +59,19 @@ def lasso_sparse(A, b, xk_1, zk_1, uk_1, lam, r, maxiter, epsilone1, epsilone2):
     flags = 0
     
     # On calcul la decomposition de choleski
-    R = sparse_choleski(np.dot(A.T, A) + sp.eye(n))
+    if compute_dense_choleski:
+        R = lg.cholesky((np.dot(A.T, A) + sp.eye(n)).todense()).T
+    else:
+        R = sparse_choleski(np.dot(A.T, A) + sp.eye(n))
 
     while not(fin) :
         
         # Actualisation de x, z et u, les variables du primal et dual
-        xk = splg.spsolve(R, splg.spsolve(R.T, A.T.dot(b) + r*(zk_1 - uk_1)) )
+        if compute_dense_choleski:
+            xk = sl.solve_triangular(R, sl.solve_triangular(R.T, A.T.dot(b) + r*(zk_1 - uk_1), lower=True), lower=False )
+        else:
+            xk = splg.spsolve_triangular(R, splg.spsolve_triangular(R.T, A.T.dot(b) + r*(zk_1 - uk_1), lower=True), lower=False )
+
         zk = Seuillage(xk + uk_1, lam/r)
         e = xk - zk
         uk = uk_1 + e
@@ -95,7 +103,7 @@ def lasso_sparse(A, b, xk_1, zk_1, uk_1, lam, r, maxiter, epsilone1, epsilone2):
     return xk, iter, historique_f_cout[:iter], flags
 
 
-def lasso_dense(A, b, xk_1, zk_1, uk_1, lam, r, maxiter, epsilone1, epsilone2):
+def lasso_dense(A, b, xk_1, zk_1, uk_1, lam, r, maxiter, epsilone1, epsilone2, **wargs):
     # Resout le probleme :
     # min 1/2*||Ax-b||_2^2 + lam*||x||_1
     # 
@@ -128,7 +136,7 @@ def lasso_dense(A, b, xk_1, zk_1, uk_1, lam, r, maxiter, epsilone1, epsilone2):
     while not(fin) :
         
         # Actualisation de x, z et u, les variables du primal et dual
-        xk = lg.solve(R, lg.solve(R.T, A.T.dot(b) + r*(zk_1 - uk_1)) )
+        xk = sl.solve_triangular(R, sl.solve_triangular(R.T, A.T.dot(b) + r*(zk_1 - uk_1), lower=True), lower=False )
         zk = Seuillage(xk + uk_1, lam/r)
         e = xk - zk
         uk = uk_1 + e
