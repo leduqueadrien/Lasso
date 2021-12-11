@@ -1,0 +1,18 @@
+Nombre d'iteration moyen pour n=100, m=50, r=1 et p=0.01 :
+122.070000
+
+Nombre d'iteration moyen pour n=500, m=250, r=1 et p=0.01 :
+207.440000
+
+Nombre d'iteration moyen pour n=1000, m=500, r=1 et p=0.01 :
+70.660000
+
+Ecart type du nombre d'iteration pour n=100, m=50, r=1 et p=0.01 :
+184.472617
+
+Ecart type du nombre d'iteration pour n=500, m=250, r=1 et p=0.01 :
+278.520018
+
+Ecart type du nombre d'iteration pour n=1000, m=500, r=1 et p=0.01 :
+33.432042
+
