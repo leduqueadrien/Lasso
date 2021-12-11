@@ -9,11 +9,12 @@ delta0=1e-4;
 
 
 [A,b,x0,z0,u0,lambda]=init(m,n,p);
-csvwrite('../DataSave/A.csv', full(A))
-csvwrite('../DataSave/b.csv', b)
+csvwrite('../ComparaisonMatlabPython/DataSave/A.csv', full(A))
+csvwrite('../ComparaisonMatlabPython/DataSave/b.csv', b)
 tic
 [x,h,flag,iter]=lasso(A,b,x0,z0,u0,lambda,r,maxiter,delta,delta0);
 executions_time = toc;
 
-fprintf("temis moyen d'execution %f sec", executions_time)
+fprintf("temps d'execution %f sec\n", executions_time)
+fprintf("nombre d'iterqtion %d", iter)
 
