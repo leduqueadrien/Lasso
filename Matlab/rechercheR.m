@@ -9,7 +9,7 @@ delta=1e-6;
 delta0=1e-4;
 
 % % recherche du bon r
-r = 0.1:0.1:10;
+r = 0.05:0.05:10;
 nr = length(r);
 iter = zeros(nr,1);
 for i=1:nr

@@ -4,16 +4,17 @@ maxiter=1000;
 delta=1e-6;
 delta0=1e-4;
 p = 0.01;
-r=1
+r=1;
 
-ns = 100:100:5000;
+ns = [100 500 1000];
 
-iters = zeros(length(ns), 1);
+moyenne = zeros(length(ns), 1);
+variance = zeros(length(ns), 1);
 
-nb_iter = 5;
+nb_iter = 100;
 
 for i=1:length(ns)
-	n = ns(i)
+	n = ns(i);
 	m = n/2;
 	iter_n = zeros(nb_iter,1);
 	for j=1:nb_iter
@@ -22,11 +23,26 @@ for i=1:length(ns)
 
 		[x,~,~,iter_n(j)] = lasso(A,b,x0,z0,u0,lambda,r,maxiter,delta,delta0);
 	end
-	iters(i) = mean(iter_n);
+	moyenne(i) = mean(iter_n);
+	variance(i) = std(iter_n);
 end
-ns
-iters
-semilogy(ns, iters)
-title("Evolution du nombre d'iteration en fonction de n (m=n/2, r=1, p=1%)")
-xlabel('n')
-ylabel("nombre d'iteration")
+
+fprintf("Nombre d'iteration moyen pour n=100, m=50, r=1 et p=0.01 :\n")
+fprintf("%f\n\n", moyenne(1))
+
+fprintf("Nombre d'iteration moyen pour n=500, m=250, r=1 et p=0.01 :\n")
+fprintf("%f\n\n", moyenne(2))
+
+fprintf("Nombre d'iteration moyen pour n=1000, m=500, r=1 et p=0.01 :\n")
+fprintf("%f\n\n", moyenne(3))
+
+fprintf("Ecart type du nombre d'iteration pour n=100, m=50, r=1 et p=0.01 :\n")
+fprintf("%f\n\n", variance(1))
+
+fprintf("Ecart type du nombre d'iteration pour n=500, m=250, r=1 et p=0.01 :\n")
+fprintf("%f\n\n", variance(2))
+
+fprintf("Ecart type du nombre d'iteration pour n=1000, m=500, r=1 et p=0.01 :\n")
+fprintf("%f\n\n", variance(3))
+
+
