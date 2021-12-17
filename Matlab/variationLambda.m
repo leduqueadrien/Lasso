@@ -5,8 +5,8 @@ p = 0.01; %densite de la matrice A
 
 [A,b,x0,z0,u0,lambda]=init(m,n,p);
 maxiter=1000;
-delta=1e-6;
-delta0=1e-4;
+eps1=1e-6;
+eps2=1e-4;
 r=1;
 
 % variation du lambda
@@ -16,7 +16,7 @@ nl = length(lambda);
 vect = zeros(nl,1);
 for i=1:nl
     lambda(i)
-    [x,~,flag,~] = lasso(A,b,x0,z0,u0,lambda(i),r,maxiter,delta,delta0);
+    [x,~,flag,~] = lasso(A,b,x0,z0,u0,lambda(i),r,maxiter,eps1,eps2);
     vect(i) = sum(abs(x)<1e-6)/n;
 end
 plot(lambda,vect)

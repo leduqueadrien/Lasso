@@ -5,12 +5,12 @@ p = 0.01; %densite de la matrice A
 
 [A,b,x0,z0,u0,lambda]=init(m,n,p);
 maxiter=1000;
-delta=1e-6;
-delta0=1e-4;
+eps1=1e-6;
+eps2=1e-4;
 
 r=1;
 tic
-[x,h,flag,iter]=lasso(A,b,x0,z0,u0,lambda,r,maxiter,delta,delta0);
+[x,h,flag,iter]=lasso(A,b,x0,z0,u0,lambda,r,maxiter,eps1,eps2);
 iter
 toc
 plot(1:iter, h)

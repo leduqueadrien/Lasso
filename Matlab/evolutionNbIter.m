@@ -1,8 +1,8 @@
 
 % % evolution des iterations en fonction des tailles
 maxiter=1000;
-delta=1e-6;
-delta0=1e-4;
+eps1=1e-6;
+eps2=1e-4;
 p = 0.01;
 r=1;
 
@@ -21,7 +21,7 @@ for i=1:length(ns)
 
 		[A,b,x0,z0,u0,lambda]=init(m,n,p);
 
-		[x,~,~,iter_n(j)] = lasso(A,b,x0,z0,u0,lambda,r,maxiter,delta,delta0);
+		[x,~,~,iter_n(j)] = lasso(A,b,x0,z0,u0,lambda,r,maxiter,eps1,eps2);
 	end
 	moyenne(i) = mean(iter_n);
 	variance(i) = std(iter_n);

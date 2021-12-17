@@ -1,4 +1,4 @@
-function [x,h,flag,iter] = lasso(A,b, x0, z0, u0, lambda, r, maxiter, delta, delta0)
+function [x,h,flag,iter] = lasso(A, b, x0, z0, u0, lambda, r, maxiter, eps1, eps2)
     %%% Probleme du LASSO avec ADMM %%%
     % flags : 
     % 0 : OK
@@ -32,7 +32,7 @@ function [x,h,flag,iter] = lasso(A,b, x0, z0, u0, lambda, r, maxiter, delta, del
         
         iter = iter + 1;
         h(iter)=0.5 * norm(A*x-b)^2 + lambda * norm(x,1);
-        done = (sqrt(c1) < delta) && (norm(e) < delta0);
+        done = (sqrt(c1) < eps1) && (norm(e) < eps2);
     end
     
     h = h(1:iter);
